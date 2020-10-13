@@ -80,7 +80,7 @@ EXP int get_bios_if_ver(ryzen_access ry)
 	return ry->bios_if_ver;
 }
 
-void error_report(const char* name) {
+void cmd_not_supported(const char* name) {
 	DBG("%s is not supported on this platform\n", name);
 }
 
@@ -249,7 +249,7 @@ EXP int CALL set_max_gfxclk_freq(ryzen_access ry, uint32_t value) {
 		_do_adjust(0x46);
 		break;
 	case FAM_RENOIR:
-		error_report("set_max_gfxclk_freq");
+		cmd_not_supported("set_max_gfxclk_freq");
 		break;
 	}
 }
@@ -262,7 +262,7 @@ EXP int CALL set_min_gfxclk_freq(ryzen_access ry, uint32_t value) {
 		_do_adjust(0x47);
 		break;
 	case FAM_RENOIR:
-		error_report("set_min_gfxclk_freq");
+		cmd_not_supported("set_min_gfxclk_freq");
 		break;
 	}
 }
@@ -275,7 +275,7 @@ EXP int CALL set_max_socclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x48);
 		break;
 	case FAM_RENOIR:
-		error_report("set_max_socclk_freq");
+		cmd_not_supported("set_max_socclk_freq");
 		break;
 	}
 }
@@ -288,7 +288,7 @@ EXP int CALL set_min_socclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x49); 
 		break;
 	case FAM_RENOIR:
-		error_report("set_min_socclk_freq");
+		cmd_not_supported("set_min_socclk_freq");
 		break;
 	}
 }
@@ -301,7 +301,7 @@ EXP int CALL set_max_fclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4A);
 		break;
 	case FAM_RENOIR:
-		error_report("set_max_fclk_freq");
+		cmd_not_supported("set_max_fclk_freq");
 		break;
 	}
 }
@@ -314,7 +314,7 @@ EXP int CALL set_min_fclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4B);
 		break;
 	case FAM_RENOIR:
-		error_report("set_min_fclk_freq");
+		cmd_not_supported("set_min_fclk_freq");
 		break;
 	}
 }
@@ -327,7 +327,7 @@ EXP int CALL set_max_vcn(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4C);
 		break;
 	case FAM_RENOIR:
-		error_report("set_max_vcn");
+		cmd_not_supported("set_max_vcn");
 		break;
 	}
 }
@@ -340,7 +340,7 @@ EXP int CALL set_min_vcn(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4D);
 		break;
 	case FAM_RENOIR:
-		error_report("set_min_vcn");
+		cmd_not_supported("set_min_vcn");
 		break;
 	}
 }
@@ -353,7 +353,7 @@ EXP int CALL set_max_lclk(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4E);
 		break;
 	case FAM_RENOIR:
-		error_report("set_max_lclk");
+		cmd_not_supported("set_max_lclk");
 		break;
 	}
 }
@@ -366,7 +366,7 @@ EXP int CALL set_min_lclk(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4F);
 		break;
 	case FAM_RENOIR:
-		error_report("set_min_lclk");
+		cmd_not_supported("set_min_lclk");
 		break;
 	}
 }
@@ -390,7 +390,7 @@ EXP int CALL set_slow_ppt_limit_apu_only(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_slow_ppt_limit_apu_only");
+		cmd_not_supported("set_slow_ppt_limit_apu_only");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x21);
@@ -404,7 +404,7 @@ EXP int CALL set_stt_alpha_apu(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_alpha_apu");
+		cmd_not_supported("set_stt_alpha_apu");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x36);
@@ -417,7 +417,7 @@ EXP int CALL set_stt_alpha_gpu(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_alpha_gpu");
+		cmd_not_supported("set_stt_alpha_gpu");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x37);
@@ -430,7 +430,7 @@ EXP int CALL set_stt_skin_temperature_limit_apu(ryzen_access ry, uint32_t value)
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_skin_temperature_limit_apu");
+		cmd_not_supported("set_stt_skin_temperature_limit_apu");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x38);
@@ -443,7 +443,7 @@ EXP int CALL set_stt_skin_temperature_limit_gpu(ryzen_access ry, uint32_t value)
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_skin_temperature_limit_gpu");
+		cmd_not_supported("set_stt_skin_temperature_limit_gpu");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x39);
@@ -457,7 +457,7 @@ EXP int CALL set_stt_error_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_error_coeff");
+		cmd_not_supported("set_stt_error_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x3A);
@@ -470,7 +470,7 @@ EXP int CALL set_stt_error_rate_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_error_rate_coeff");
+		cmd_not_supported("set_stt_error_rate_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x3B);
@@ -483,7 +483,7 @@ EXP int CALL set_stt_m1_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_m1_coeff");
+		cmd_not_supported("set_stt_m1_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x3C);
@@ -496,7 +496,7 @@ EXP int CALL set_stt_m2_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_m2_coeff");
+		cmd_not_supported("set_stt_m2_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x3D);
@@ -509,7 +509,7 @@ EXP int CALL set_stt_m3_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_m3_coeff");
+		cmd_not_supported("set_stt_m3_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x3E);
@@ -522,7 +522,7 @@ EXP int CALL set_stt_m4_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_m4_coeff");
+		cmd_not_supported("set_stt_m4_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x3F);
@@ -535,7 +535,7 @@ EXP int CALL set_stt_m5_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_m5_coeff");
+		cmd_not_supported("set_stt_m5_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x40);
@@ -548,7 +548,7 @@ EXP int CALL set_stt_m6_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_m6_coeff");
+		cmd_not_supported("set_stt_m6_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x41);
@@ -561,7 +561,7 @@ EXP int CALL set_stt_c_apu_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_c_apu_coeff");
+		cmd_not_supported("set_stt_c_apu_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x42);
@@ -574,7 +574,7 @@ EXP int CALL set_stt_c_gpu_coeff(ryzen_access ry, uint32_t value) {
 	{
 	case FAM_RAVEN:
 	case FAM_PICASSO:
-		error_report("set_stt_c_gpu_coeff");
+		cmd_not_supported("set_stt_c_gpu_coeff");
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x43);
