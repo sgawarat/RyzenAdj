@@ -81,7 +81,7 @@ EXP int get_bios_if_ver(ryzen_access ry)
 }
 
 void cmd_not_supported(const char* name) {
-	DBG("%s is not supported on this platform\n", name);
+	printf("%s is not supported on this platform\n", name);
 }
 
 #define _do_adjust(OPT) \
