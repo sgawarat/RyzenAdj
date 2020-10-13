@@ -80,6 +80,10 @@ EXP int get_bios_if_ver(ryzen_access ry)
 	return ry->bios_if_ver;
 }
 
+void error_report(const char* name) {
+	DBG("%s is not supported on this platform\n", name);
+}
+
 #define _do_adjust(OPT) \
 do{ \
 		smu_service_args_t args = {0, 0, 0, 0, 0, 0};    \
@@ -245,6 +249,7 @@ EXP int CALL set_max_gfxclk_freq(ryzen_access ry, uint32_t value) {
 		_do_adjust(0x46);
 		break;
 	case FAM_RENOIR:
+		error_report("set_max_gfxclk_freq");
 		break;
 	}
 }
@@ -257,6 +262,7 @@ EXP int CALL set_min_gfxclk_freq(ryzen_access ry, uint32_t value) {
 		_do_adjust(0x47);
 		break;
 	case FAM_RENOIR:
+		error_report("set_min_gfxclk_freq");
 		break;
 	}
 }
@@ -269,6 +275,7 @@ EXP int CALL set_max_socclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x48);
 		break;
 	case FAM_RENOIR:
+		error_report("set_max_socclk_freq");
 		break;
 	}
 }
@@ -281,6 +288,7 @@ EXP int CALL set_min_socclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x49); 
 		break;
 	case FAM_RENOIR:
+		error_report("set_min_socclk_freq");
 		break;
 	}
 }
@@ -293,6 +301,7 @@ EXP int CALL set_max_fclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4A);
 		break;
 	case FAM_RENOIR:
+		error_report("set_max_fclk_freq");
 		break;
 	}
 }
@@ -305,6 +314,7 @@ EXP int CALL set_min_fclk_freq(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4B);
 		break;
 	case FAM_RENOIR:
+		error_report("set_min_fclk_freq");
 		break;
 	}
 }
@@ -317,6 +327,7 @@ EXP int CALL set_max_vcn(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4C);
 		break;
 	case FAM_RENOIR:
+		error_report("set_max_vcn");
 		break;
 	}
 }
@@ -329,6 +340,7 @@ EXP int CALL set_min_vcn(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4D);
 		break;
 	case FAM_RENOIR:
+		error_report("set_min_vcn");
 		break;
 	}
 }
@@ -341,6 +353,7 @@ EXP int CALL set_max_lclk(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4E);
 		break;
 	case FAM_RENOIR:
+		error_report("set_max_lclk");
 		break;
 	}
 }
@@ -353,6 +366,7 @@ EXP int CALL set_min_lclk(ryzen_access ry, uint32_t value){
 		_do_adjust(0x4F);
 		break;
 	case FAM_RENOIR:
+		error_report("set_min_lclk");
 		break;
 	}
 }
@@ -366,6 +380,204 @@ EXP int CALL set_prochot_deassertion_ramp(ryzen_access ry, uint32_t value) {
 		break;
 	case FAM_RENOIR:
 		_do_adjust(0x20);
+		break;
+	}
+}
+
+//Renoir and only only
+EXP int CALL set_slow_ppt_limit_apu_only(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_slow_ppt_limit_apu_only");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x21);
+		break;
+	}
+}
+
+//Skin Temperature Tracking - Renoir and later only
+EXP int CALL set_stt_alpha_apu(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_alpha_apu");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x36);
+		break;
+	}
+}
+
+EXP int CALL set_stt_alpha_gpu(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_alpha_gpu");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x37);
+		break;
+	}
+}
+
+EXP int CALL set_stt_skin_temperature_limit_apu(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_skin_temperature_limit_apu");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x38);
+		break;
+	}
+}
+
+EXP int CALL set_stt_skin_temperature_limit_gpu(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_skin_temperature_limit_gpu");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x39);
+		break;
+	}
+}
+
+
+EXP int CALL set_stt_error_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_error_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x3A);
+		break;
+	}
+}
+
+EXP int CALL set_stt_error_rate_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_error_rate_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x3B);
+		break;
+	}
+}
+
+EXP int CALL set_stt_m1_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_m1_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x3C);
+		break;
+	}
+}
+
+EXP int CALL set_stt_m2_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_m2_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x3D);
+		break;
+	}
+}
+
+EXP int CALL set_stt_m3_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_m3_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x3E);
+		break;
+	}
+}
+
+EXP int CALL set_stt_m4_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_m4_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x3F);
+		break;
+	}
+}
+
+EXP int CALL set_stt_m5_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_m5_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x40);
+		break;
+	}
+}
+
+EXP int CALL set_stt_m6_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_m6_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x41);
+		break;
+	}
+}
+
+EXP int CALL set_stt_c_apu_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_c_apu_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x42);
+		break;
+	}
+}
+
+EXP int CALL set_stt_c_gpu_coeff(ryzen_access ry, uint32_t value) {
+	switch (ry->family)
+	{
+	case FAM_RAVEN:
+	case FAM_PICASSO:
+		error_report("set_stt_c_gpu_coeff");
+		break;
+	case FAM_RENOIR:
+		_do_adjust(0x43);
 		break;
 	}
 }
