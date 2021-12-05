@@ -6,6 +6,8 @@
 #include "lib/ryzenadj.h"
 #include "argparse.h"
 
+#include <synchapi.h>
+
 #define STRINGIFY2(X) #X
 #define STRINGIFY(X) STRINGIFY2(X)
 
@@ -194,10 +196,14 @@ int main(int argc, const char **argv)
 	uint32_t max_gfxclk_freq = -1, min_gfxclk_freq = -1, prochot_deassertion_ramp = -1, apu_skin_temp_limit = -1, dgpu_skin_temp_limit = -1, apu_slow_limit = -1;
 	uint32_t skin_temp_power_limit = -1;
 
+	int interactive = 0, startup = 0;
+
 	//create structure for parseing
 	struct argparse_option options[] = {
 		OPT_HELP(),
 		OPT_GROUP("Options"),
+		OPT_BOOLEAN('\0', "interactive", &interactive, "Interactive"),
+            OPT_BOOLEAN('\0', "startup", &startup, "Startup"),
 		OPT_BOOLEAN('i', "info", &info, "Show information and most importand power metrics after adjustment"),
 		OPT_BOOLEAN('\0', "dump-table", &dump_table, "Show whole power metric table before and after adjustment"),
 		OPT_GROUP("Settings"),
@@ -240,70 +246,104 @@ int main(int argc, const char **argv)
 	argparse_describe(&argparse, "\n Ryzen Power Management adjust tool.", "\nWARNING: Use at your own risk!\nBy Jiaxun Yang <jiaxun.yang@flygoat.com>, Under LGPL.\nVersion: v" STRINGIFY(RYZENADJ_REVISION_VER) "." STRINGIFY(RYZENADJ_MAJOR_VER) "." STRINGIFY(RYZENADJ_MINIOR_VER));
 	argc = argparse_parse(&argparse, argc, argv);
 
+    if (startup) {
+       Sleep(100);
+    }
 
-	//init RyzenAdj and validate that it was able to
-	ry = init_ryzenadj();
-	if(!ry){
-		printf("Unable to init ryzenadj\n");
-		return -1;
-	}
+	int entered = 0, info_only = 0;
+	do {
+          // init RyzenAdj and validate that it was able to
+          ry = init_ryzenadj();
+          if (!ry) {
+            printf("Unable to init ryzenadj\n");
+            return -1;
+          }
 
-	//shows info header before init_table
-	if (info) {
-		show_info_header(ry);
-	}
+          // shows info header before init_table
+          if (info) {
+            show_info_header(ry);
+          }
 
-	if (info || dump_table) {
-		//init before adjustment to get the default values
-		err = init_table(ry);
-		if (err) {
-			printf("Unable to init power metric table: %d, this does not affect adjustments because it is only needed for monitoring.\n", err);
-		}
-	}
+          if (info || dump_table || interactive) {
+            // init before adjustment to get the default values
+            err = init_table(ry);
+            if (err) {
+              printf(
+                  "Unable to init power metric table: %d, this does not affect "
+                  "adjustments because it is only needed for monitoring.\n",
+                  err);
+            }
+          }
 
-	//adjust all the arguments sent to RyzenAdj.exe
-	_do_adjust(stapm_limit);
-	_do_adjust(fast_limit);
-	_do_adjust(slow_limit);
-	_do_adjust(slow_time);
-	_do_adjust(stapm_time);
-	_do_adjust(tctl_temp);
-	_do_adjust(vrm_current);
-	_do_adjust(vrmsoc_current);
-	_do_adjust(vrmmax_current);
-	_do_adjust(vrmsocmax_current);
-	_do_adjust(psi0_current);
-	_do_adjust(psi0soc_current);
-	_do_adjust(max_socclk_freq);
-	_do_adjust(min_socclk_freq);
-	_do_adjust(max_fclk_freq);
-	_do_adjust(min_fclk_freq);
-	_do_adjust(max_vcn);
-	_do_adjust(min_vcn);
-	_do_adjust(max_lclk);
-	_do_adjust(min_lclk);
-	_do_adjust(max_gfxclk_freq);
-	_do_adjust(min_gfxclk_freq);
-	_do_adjust(prochot_deassertion_ramp);
-	_do_adjust(apu_skin_temp_limit);
-	_do_adjust(dgpu_skin_temp_limit);
-	_do_adjust(apu_slow_limit);
-	_do_adjust(skin_temp_power_limit);
-	_do_enable(power_saving);
-	_do_enable(max_performance);
+		  if (!info_only) {
+            // adjust all the arguments sent to RyzenAdj.exe
+            _do_adjust(stapm_limit);
+            _do_adjust(fast_limit);
+            _do_adjust(slow_limit);
+            _do_adjust(slow_time);
+            _do_adjust(stapm_time);
+            _do_adjust(tctl_temp);
+            _do_adjust(vrm_current);
+            _do_adjust(vrmsoc_current);
+            _do_adjust(vrmmax_current);
+            _do_adjust(vrmsocmax_current);
+            _do_adjust(psi0_current);
+            _do_adjust(psi0soc_current);
+            _do_adjust(max_socclk_freq);
+            _do_adjust(min_socclk_freq);
+            _do_adjust(max_fclk_freq);
+            _do_adjust(min_fclk_freq);
+            _do_adjust(max_vcn);
+            _do_adjust(min_vcn);
+            _do_adjust(max_lclk);
+            _do_adjust(min_lclk);
+            _do_adjust(max_gfxclk_freq);
+            _do_adjust(min_gfxclk_freq);
+            _do_adjust(prochot_deassertion_ramp);
+            _do_adjust(apu_skin_temp_limit);
+            _do_adjust(dgpu_skin_temp_limit);
+            _do_adjust(apu_slow_limit);
+            _do_adjust(skin_temp_power_limit);
+            _do_enable(power_saving);
+            _do_enable(max_performance);
+          }
 
-	if (!err) {
-		//call show table dump before anybody did call table refresh, because we want to copy the old values first
-		if (dump_table) {
-			show_table_dump(ry, any_adjust_applied);
-		}
-		//show power table after apply settings
-		if (info) {
-			show_info_table(ry);
-		}
-	}
+          if (!err) {
+            // call show table dump before anybody did call table refresh,
+            // because we want to copy the old values first
+            if (dump_table) {
+              show_table_dump(ry, any_adjust_applied);
+            }
+            // show power table after apply settings
+            if (info || interactive) {
+              show_info_table(ry);
+            }
+          }
 
-	cleanup_ryzenadj(ry);
+          cleanup_ryzenadj(ry);
+
+		  if (interactive) {
+            printf("retry? (y/i/N)\n");
+
+			int retry = getchar();
+            if (retry == '\n') {
+              if (!entered) break;
+              entered = 0;
+              retry = getchar();
+            }
+			if (retry == 'y' || retry == 'Y') {
+              info_only = 0;
+              entered = 1;
+              continue;
+                        } else if (retry == 'i') {
+                          info_only = 1;
+                          entered = 1;
+                          continue;
+						} else {
+               break;
+            }
+		  }
+        } while (interactive);
 
 	return err;
 }
